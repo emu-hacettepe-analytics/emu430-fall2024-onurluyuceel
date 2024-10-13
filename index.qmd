@@ -1,14 +1,12 @@
 ---
-title: "Welcome to My Analytics Lab"
-sidebar: false 
+title: "Welcome to My Analytics Lab - Onur"
+sidebar: false
 ---
 
-![Buben](images/sokka.jpeg){fig-align="center" width="300"}
+![My Profile Photo](images/sokka.jpeg)
 
-Hello! My name is Onur Yücel
+Hello! My name is Onur Yücel.
 
 This is my personal webpage.
 
 Please stay tuned to follow my works on data analytics, blog posts, and more.
-
-This is our template.
