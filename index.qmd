@@ -3,6 +3,8 @@ title: "Welcome to My Analytics Lab"
 sidebar: false 
 ---
 
+\![My Profile Photo\](images/sokka.jpeg){fig-align="center" width="300"}
+
 Hello! My name is Onur Yücel
 
 This is my personal webpage.
