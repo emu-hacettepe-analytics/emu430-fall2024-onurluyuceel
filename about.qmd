@@ -5,26 +5,22 @@ sidebar: false
 
 # Education
 
--   B.S., Industrial Engineering, Hacettepe University, Turkey, 20xx - ongoing.
+-   B.S., Industrial Engineering, Hacettepe University, Turkey, 2023 - ongoing.
 
 # Work Experience
 
+Between September 2023 and August 2024, I worked as a game developer in our little game development crew, Gatto Games. Then we applied and got accepted to the Animasyon Teknolojileri ve Oyun Geli??tirme Merkezi (ATOM) in ODT?? TEKNOKENT. After 8 months of experience, we terminated the project.
+
 ## Employements
 
-1.  Firm xxx, position xx, year xxx
-
-2.  Firm yyy, position yyy, year yyy
-
 ## Internships
-
-1.  Firm aaa, position xx, year xxx
-
-2.  Firm bbb, position yyy, year yyy
 
 # Projects
 
 # Competencies
 
-R, Quarto, Git, Python
+R, Quarto, Git, Python, C, C#
 
 # Hobbies
+
+Guitars, Football, Books and Movies

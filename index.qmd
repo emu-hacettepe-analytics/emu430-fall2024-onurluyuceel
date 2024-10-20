@@ -1,11 +1,11 @@
 ---
-title: "Welcome to My Analytics Lab - Onur"
+title: "Welcome to My Analytics Lab"
 sidebar: false
 ---
 
 ![My Profile Photo](images/sokka.jpeg)
 
-Hello! My name is Onur Yücel.
+Hello! My name is Onur Yucel.
 
 This is my personal webpage.
 
