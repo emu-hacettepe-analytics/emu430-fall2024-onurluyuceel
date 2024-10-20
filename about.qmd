@@ -9,7 +9,7 @@ sidebar: false
 
 # Work Experience
 
-Between September 2023 and August 2024, I worked as a game developer in our little game development crew, Gatto Games. Then we applied and got accepted to the Animasyon Teknolojileri ve Oyun Geli??tirme Merkezi (ATOM) in ODT?? TEKNOKENT. After 8 months of experience, we terminated the project.
+Between September 2023 and August 2024, I worked as a game developer in our little game development crew, Gatto Games. Then we applied and got accepted to the Animasyon Teknolojileri ve Oyun Gelistirme Merkezi (ATOM) in ODTU TEKNOKENT. After 8 months of experience, we terminated the project.
 
 ## Employements
 
