@@ -3,7 +3,17 @@ title: "Welcome to My Analytics Lab"
 sidebar: false
 ---
 
-![My Profile Photo](docs/images/sokka.jpeg)
+::: {layout-ncol=3 style="align-items: center; text-align: center;"}
+<img src="docs/images/sokka.jpeg" width="300" height="300"/>
+
+<div style="display: flex; align-items: center; justify-content: center; height: 300px;>
+  <strong>LITERALLY ME</strong>
+</div>
+
+<img src="docs/images/me.jpg" width="300" height="300"/>
+:::
+
+
 
 Hello! My name is Onur Yucel.
 
