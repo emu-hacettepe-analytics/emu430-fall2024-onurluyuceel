@@ -7,6 +7,8 @@ sidebar: false
 
 -   B.S., Industrial Engineering, Hacettepe University, Turkey, 2023 - ongoing.
 
+-   B.S., Electrical and Electronics Engineering, Hacettepe University, Turkey, 2020 - 2023 (Drop Off)
+
 # Work Experience
 
 Between September 2023 and August 2024, I worked as a game developer in our little game development crew, Gatto Games. Then we applied and got accepted to the Animasyon Teknolojileri ve Oyun Gelistirme Merkezi (ATOM) in ODTU TEKNOKENT. After 8 months of experience, we terminated the project.
