@@ -3,7 +3,7 @@ title: "Welcome to My Analytics Lab"
 sidebar: false
 ---
 
-![My Profile Photo](images/sokka.jpeg)
+![My Profile Photo](docs/images/sokka.jpeg)
 
 Hello! My name is Onur Yucel.
 
