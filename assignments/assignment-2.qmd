@@ -18,3 +18,44 @@ data(polls_us_election_2016)
 first_ten_rows <- head(polls_us_election_2016,10)
 print(first_ten_rows)
 ```
+
+**STEP 3** \# Calculate and display the total number of NA values in the entire data set. \# I used the sum and is.na functions. is.na function returns a 1 or 0 value, and the sum function sums them.
+
+```{r}
+total_na <- sum(is.na(polls_us_election_2016))
+print(paste("Total NA values:", total_na))
+```
+
+**STEP 4** \# Replace all NA values in the ???polls_us_election_2016??? data set as follows: For numeric columns, replace NA values with your birth year. For character or factor columns, replace NA values with your first name. Store the modified data set as a new object.
+
+```{r}
+birth_year <- 2002  
+first_name <- "Onur" 
+
+modified_data <- polls_us_election_2016
+
+for (col in names(modified_data)) {
+  if (is.numeric(modified_data[[col]])) 
+  {
+    modified_data[[col]][is.na(modified_data[[col]])] <- birth_year
+  } 
+  else if (is.factor(modified_data[[col]])) 
+  {
+    levels(modified_data[[col]]) <- c(levels(modified_data[[col]]), first_name)
+    modified_data[[col]][is.na(modified_data[[col]])] <- first_name
+  }
+  else if (is.character(modified_data[[col]])) 
+  {
+    modified_data[[col]][is.na(modified_data[[col]])] <- first_name
+  }
+}
+```
+
+**STEP 5** \# Print the first 10 rows of the new data frame and the total number of NAs remaining in the new data frame.
+
+```{r}
+print(head(modified_data, 10))
+
+remaining_na <- sum(is.na(modified_data))
+cat("Remaining NA values:", remaining_na, "\n")
+```
