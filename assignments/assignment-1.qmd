@@ -11,5 +11,22 @@ title: "Assignment 1"
 My first assignment has two parts.
 
 ## (a)
+According to Mustafa Baydo??an, we, as industrial engineers, frequently encounter optimization problems. There are tools we have learned to solve these problems, the most important of which is mathematical modeling. Recently, methods have started to be taught on the data mining and analysis side.
 
+According to his experience with a company dealing with lumber, as industrial engineers, we can be a bridge between the problem and the solution. From the moment he first heard about the company's problem, he investigated the problem in detail and tried to understand it. This made those experiencing the problem feel understood. Again, from this story, it is seen that we can work with many different disciplines.
+
+Later, Mr. Baydo??an talked about the importance of estimating production and consumption in the electricity market and showed us the great damages that wrong estimations will cause. He also explained the differences between deep learning and traditional learning and discussed how to solve these estimation problems.
+
+He stated that many applications collect data from us in addition to the service they provide to us and take their positions according to this data.
+
+Finally, he concluded his words by saying that, in his opinion, the best way to learn is to get our hands dirty and get involved.
+
+QUESTION 1- What is the correct order of the decision-making process?
+a) Goal Setting - Determining the Possible Cause of the Problem - Collecting the necessary information about the Problem - Identifying Alternatives and Selecting the Most Effective Solution
+b) Identifying Alternatives and Selecting the Most Effective Solution - Goal Setting - Collecting the necessary information about the Problem - Determining the Possible Cause of the Problem
+c) Goal Setting - Collecting the necessary information about the Problem - Identifying Alternatives and Selecting the Most Effective Solution - Determining the Possible Cause of the Problem
+d) Determining the Possible Cause of the Problem - Collecting the necessary information about the Problem - Identifying Alternatives and Selecting the Most Effective Solution - Goal Setting
+
+QUESTION 2- What do Industrial Engineers usually deal with in their work?
+Answer: Industrial engineers frequently encounter optimization problems in their professional lives. They learn various tools to solve these problems, with mathematical modeling being one of them. Problems that cannot be solved through deterministic methods are addressed using statistical or stochastic approaches. In the past decade, data mining has also become one of these essential tools.
 ## (b)
