@@ -49,12 +49,5 @@ format:
       light: pulse 
       dark: superhero
     css: styles.css
-    custom-css:
-      - |
-        :root {
-          --primary-color: #a90432; /* Ana renk de??i??keni */
-        }
-
 
 editor: visual
-
