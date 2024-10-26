@@ -45,9 +45,11 @@ format:
   html:
     toc: true
     toc-location: left
-    theme: 
-      light: pulse 
-      dark: superhero
+    theme:
+      light: lux
+      dark: vapor
     css: styles.css
 
+
 editor: visual
+
