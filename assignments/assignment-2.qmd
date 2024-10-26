@@ -4,6 +4,17 @@ title: "Assignment 2"
 
 # Assignment 2
 
+**STEP 1** \# We need to install the 'dslabs' library and save the polls_us_election_2016.
+
 ```{r}
-1 + 1
+install.packages("dslabs")
+library(dslabs)
+data(polls_us_election_2016)
+```
+
+**STEP 2** \# Display the first 10 rows.
+
+```{r}
+first_ten_rows <- head(polls_us_election_2016,10)
+print(first_ten_rows)
 ```
