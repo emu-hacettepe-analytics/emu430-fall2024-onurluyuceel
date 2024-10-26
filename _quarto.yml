@@ -46,6 +46,7 @@ format:
     toc: true
     toc-location: left
     theme: 
+      fontcolor: "#a90432""
       light: pulse 
       dark: superhero
     css: styles.css

@@ -3,11 +3,6 @@ title: "Assignment 1"
 ---
 
 # Assignment 1
-
-```{r}
-1 + 1
-```
-
 My first assignment has two parts.
 
 ## (a)
@@ -21,14 +16,15 @@ He stated that many applications collect data from us in addition to the service
 
 Finally, he concluded his words by saying that, in his opinion, the best way to learn is to get our hands dirty and get involved.
 
-QUESTION 1- What is the correct order of the decision-making process?
+**QUESTION 1**- What is the correct order of the decision-making process?
 a) Goal Setting - Determining the Possible Cause of the Problem - Collecting the necessary information about the Problem - Identifying Alternatives and Selecting the Most Effective Solution
 b) Identifying Alternatives and Selecting the Most Effective Solution - Goal Setting - Collecting the necessary information about the Problem - Determining the Possible Cause of the Problem
 c) Goal Setting - Collecting the necessary information about the Problem - Identifying Alternatives and Selecting the Most Effective Solution - Determining the Possible Cause of the Problem
 d) Determining the Possible Cause of the Problem - Collecting the necessary information about the Problem - Identifying Alternatives and Selecting the Most Effective Solution - Goal Setting
 
-QUESTION 2- What do Industrial Engineers usually deal with in their work?
+**QUESTION 2**- What do Industrial Engineers usually deal with in their work?
 Answer: Industrial engineers frequently encounter optimization problems in their professional lives. They learn various tools to solve these problems, with mathematical modeling being one of them. Problems that cannot be solved through deterministic methods are addressed using statistical or stochastic approaches. In the past decade, data mining has also become one of these essential tools.
+
 ## (b)
 
 **STEP 1** \# We need to install the 'dslabs' library and save the polls_us_election_2016.
