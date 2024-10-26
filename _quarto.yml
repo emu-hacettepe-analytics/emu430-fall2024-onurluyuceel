@@ -46,10 +46,14 @@ format:
     toc: true
     toc-location: left
     theme: 
-      fontcolor: "#a90432""
       light: pulse 
       dark: superhero
     css: styles.css
+    custom-css:
+      - |
+        :root {
+          --primary-color: #a90432; /* Ana renk de??i??keni */
+        }
 
 
 editor: visual
