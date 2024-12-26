@@ -3,9 +3,6 @@ title: "Assignment 2"
 ---
 # Assignment 2
 
-
-```{r}
-library(dslabs)
-data(polls_us_election_2016)
-```
+You Should Check This Website for my Assignment 2!
+[Assignment 2](https://emu-hacettepe-analytics.github.io/emu430-fall2024-team-rtistler/)
 
