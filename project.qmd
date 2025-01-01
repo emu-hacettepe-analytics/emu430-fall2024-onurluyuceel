@@ -3,10 +3,21 @@ title: "Our Course Project"
 sidebar: false 
 ---
 
-I'm honored to be a member of the \[group name\] project team.
+I'm honored to be a member of the \[RTISTLER\] project team.
 
-Below, you'll find a brief summary of our project. To access a detailed project description, please go to [https://\[your-project-url\]](#0){.uri}.
+Below, you'll find a brief summary of our project. To access a detailed project description, please go to [Project](https://emu-hacettepe-analytics.github.io/emu430-fall2024-team-rtistler/){.uri}.
 
 **Summary**
 
-\[provide a biref summary of your project\]
+We selected the data set on education levels by province from T????K (Turkish 
+Statistical Institute). Our reasons for choosing this data are that it provides access to 
+a large amount of information, making it easier for us to visualize and interpret the 
+data. On the other hand, education is crucial for an individual???s development and is 
+essential for both society and the surrounding environment. As university students, 
+we want to observe the state of education in Turkey through concrete data and draw 
+some conclusions. Our objectives are to analyze the changes in Turkey???s education 
+situation over the years and across provinces, in order to:
+ 1-Identify regions where educational opportunities are lacking.
+ 2-Evaluate whether past policies have been elective.
+ 3-Develop smart policies to ensure equal access to education.
+ 4-Draw conclusions on how education has impacted our society.

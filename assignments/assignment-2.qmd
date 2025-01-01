@@ -1,8 +1,258 @@
 ---
 title: "Assignment 2"
 ---
-# Assignment 2
 
-You Should Check This Website for my Assignment 2!
-[Assignment 2](https://emu-hacettepe-analytics.github.io/emu430-fall2024-team-rtistler/)
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+#| echo: true
+#| message: false
+#| warning: false
 
+#Required Libraries
+library(tidyverse) # for everything :) 
+library(rvest) # for HTML scraping 
+library(stringr) # for string processing
+
+#URL's
+URLS <- c("https://m.imdb.com/search/title/?title_type=feature&release_date=2010-01-01,2023-12-31&num_votes=2500,&country_of_origin=TR&count=250" ,"https://m.imdb.com/search/title/?title_type=feature&release_date=,2009-12-31&num_votes=2500,&country_of_origin=TR&count=250")
+
+#Scrapping 
+data_html <- read_html(URLS[1])
+
+# extract titles (movie names)
+title_names <- data_html |> html_nodes('.ipc-title__text')
+title_names <- html_text(title_names)
+title_names <- tail(head(title_names,-1),-1)
+title_names <- str_split(title_names, " ", n=2)
+title_names <- unlist(lapply(title_names, function(x) {x[2]}))
+
+# extract years 
+years <- data_html |> html_nodes('.sc-300a8231-7:nth-child(1)') |> html_text()
+
+# extract durations 
+durations <- data_html |> html_nodes('.sc-300a8231-7:nth-child(2)') |> html_text()
+durations <- sapply(durations, function(x) {
+  time_parts <- strsplit(x, "h|m")[[1]]
+  as.numeric(time_parts[1]) * 60 + as.numeric(time_parts[2])
+})
+
+#extract rating
+ratings <- data_html |> html_nodes('.ipc-rating-star--rating') |> html_text()
+
+#extract votes
+votes <- data_html %>% html_nodes(".ipc-rating-star--voteCount") %>% html_text()
+votes <- gsub("\\(|\\)| ", "", votes)
+
+movies_data <- data.frame(
+  Title = title_names,
+  Year = years,
+  Duration = durations,
+  Rating = ratings,
+  Votes = votes,
+  stringsAsFactors = FALSE
+)
+
+rownames(movies_data) <- NULL 
+print(movies_data)
+
+```
+# 3.a
+**Movies and Their Ratings**
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+#| echo: true
+#| message: false
+#| warning: false
+
+library(dplyr)
+library(ggplot2)
+
+#Convert the datatype of the Rating column 
+movies_data$Rating <- as.numeric(movies_data$Rating)
+
+
+max_rating <- max(movies_data$Rating, na.rm = TRUE)
+min_rating <- min(movies_data$Rating, na.rm = TRUE)
+mid_point <- (max_rating + min_rating) / 2
+
+movies_data_arranged_by_rating <- movies_data %>%
+  arrange(desc(Rating))
+
+ggplot(movies_data, aes(x = Rating, y = reorder(Title, Rating), fill = Rating > mid_point)) +
+  geom_segment(aes(x = mid_point, xend = Rating, yend = Title), size = 4) +
+  scale_fill_manual(values = c("red", "blue"), labels = c("Below Midpoint", "Above Midpoint")) +
+  labs(
+    title = "Movies and Ratings",
+    x = "Rating",
+    y = "Movies",
+    fill = "Rating Category"
+  ) +
+  theme_minimal() +
+  scale_x_continuous(breaks = seq(min(movies_data$Rating), max(movies_data$Rating), by = 1))  # X ekseninde rating de??erleri
+
+
+```
+
+**Best 5 Movies by Rating**
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+#| echo: true
+#| message: false
+#| warning: false
+
+
+top_5_movies <- movies_data %>%
+  arrange(desc(Rating)) %>%
+  head(5)
+
+print(top_5_movies)
+```
+
+**Worst 5 Movies by Rating.**
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+#| echo: true
+#| message: false
+#| warning: false
+#| 
+bottom_5_movies <- movies_data %>%
+  arrange(Rating) %>%
+  head(5)
+
+print(bottom_5_movies)
+
+```
+
+# 3.b
+My Favourite 3 Films
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+#| echo: true
+#| message: false
+#| warning: false
+
+library(gt)
+
+#Highlighting my favs
+my_fav_three_movies <- movies_data_arranged_by_rating |> 
+  filter(Title %in% c("Av Mevsimi", "Bir Zamanlar Anadolu'da", "Ahlat Agaci"))
+
+#Creating the table.
+movies_data_arranged_by_rating %>%
+  gt() %>%
+  tab_style(
+    style = cell_fill(color = "yellow"),
+    locations = cells_body(
+      columns = vars(Title), 
+      rows = Title %in% c("Av Mevsimi", "Bir Zamanlar Anadolu'da", "Ahlat Agaci")
+    )
+  )
+
+```
+
+# 3.c
+
+Average Ratings by Year
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+#| echo: true
+#| message: false
+#| warning: false
+
+library(dplyr)
+
+# Calculate yearly rating averages
+yearly_rating_averages <- movies_data_arranged_by_rating %>%
+  group_by(Year) %>%
+  summarise(average_rating = mean(as.numeric(Rating), na.rm = TRUE))
+
+# View the result
+print(yearly_rating_averages)
+
+```
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+#| echo: true
+#| message: false
+#| warning: false
+
+library(ggplot2)
+
+# Scatter plot of yearly rating averages with line connecting the points
+ggplot(yearly_rating_averages, aes(x = Year, y = average_rating)) +
+  geom_point(color = "blue") + 
+  geom_line(group = 1, color = "blue") +  # Adding line connecting the points
+  labs(
+    title = "Average Movie Ratings Over the Years",
+    x = "Year",
+    y = "Average Rating"
+  ) +
+  theme_minimal()
+
+```
+
+Number of Movies per Year
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+#| echo: true
+#| message: false
+#| warning: false
+# Calculate the number of movies per year
+movies_per_year <- movies_data_arranged_by_rating %>%
+  group_by(Year) %>%
+  summarise(number_of_movies = n())
+
+# Scatter plot of number of movies per year
+ggplot(movies_per_year, aes(x = Year, y = number_of_movies)) +
+  geom_point(color = "red") +
+  geom_line(group = 1, color = "blue") +
+  labs(
+    title = "Number of Movies Per Year",
+    x = "Year",
+    y = "Number of Movies"
+  ) +
+  theme_minimal()
+
+```
+
+Box Plot of Ratings Over the Years
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+#| echo: true
+#| message: false
+#| warning: false
+
+# Box plot of ratings over the years
+ggplot(movies_data_arranged_by_rating, aes(x = as.factor(Year), y = as.numeric(Rating))) +
+  geom_boxplot(fill = "tomato", color = "black") +
+  labs(
+    title = "Box Plot of Movie Ratings Over the Years",
+    x = "Year",
+    y = "Rating"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+# 3.d
+Is there a correlation between **Votes** and **Ratings**
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+#| echo: true
+#| message: false
+#| warning: false
+
+
+
+```

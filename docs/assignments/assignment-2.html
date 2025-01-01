@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -177,7 +211,10 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#assignment-2" id="toc-assignment-2" class="nav-link active" data-scroll-target="#assignment-2">Assignment 2</a></li>
+  <li><a href="#a" id="toc-a" class="nav-link active" data-scroll-target="#a">3.a</a></li>
+  <li><a href="#b" id="toc-b" class="nav-link" data-scroll-target="#b">3.b</a></li>
+  <li><a href="#c" id="toc-c" class="nav-link" data-scroll-target="#c">3.c</a></li>
+  <li><a href="#d" id="toc-d" class="nav-link" data-scroll-target="#d">3.d</a></li>
   </ul>
 </nav>
 </nav>
@@ -207,9 +244,961 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="assignment-2" class="level1">
-<h1>Assignment 2</h1>
-<p>You Should Check This Website for my Assignment 2! <a href="https://emu-hacettepe-analytics.github.io/emu430-fall2024-team-rtistler/">Assignment 2</a></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Required Libraries</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse) <span class="co"># for everything :) </span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rvest) <span class="co"># for HTML scraping </span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr) <span class="co"># for string processing</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">#URL's</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>URLS <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"https://m.imdb.com/search/title/?title_type=feature&amp;release_date=2010-01-01,2023-12-31&amp;num_votes=2500,&amp;country_of_origin=TR&amp;count=250"</span> ,<span class="st">"https://m.imdb.com/search/title/?title_type=feature&amp;release_date=,2009-12-31&amp;num_votes=2500,&amp;country_of_origin=TR&amp;count=250"</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">#Scrapping </span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>data_html <span class="ot">&lt;-</span> <span class="fu">read_html</span>(URLS[<span class="dv">1</span>])</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># extract titles (movie names)</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>title_names <span class="ot">&lt;-</span> data_html <span class="sc">|&gt;</span> <span class="fu">html_nodes</span>(<span class="st">'.ipc-title__text'</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>title_names <span class="ot">&lt;-</span> <span class="fu">html_text</span>(title_names)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>title_names <span class="ot">&lt;-</span> <span class="fu">tail</span>(<span class="fu">head</span>(title_names,<span class="sc">-</span><span class="dv">1</span>),<span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>title_names <span class="ot">&lt;-</span> <span class="fu">str_split</span>(title_names, <span class="st">" "</span>, <span class="at">n=</span><span class="dv">2</span>)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>title_names <span class="ot">&lt;-</span> <span class="fu">unlist</span>(<span class="fu">lapply</span>(title_names, <span class="cf">function</span>(x) {x[<span class="dv">2</span>]}))</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co"># extract years </span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>years <span class="ot">&lt;-</span> data_html <span class="sc">|&gt;</span> <span class="fu">html_nodes</span>(<span class="st">'.sc-300a8231-7:nth-child(1)'</span>) <span class="sc">|&gt;</span> <span class="fu">html_text</span>()</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co"># extract durations </span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>durations <span class="ot">&lt;-</span> data_html <span class="sc">|&gt;</span> <span class="fu">html_nodes</span>(<span class="st">'.sc-300a8231-7:nth-child(2)'</span>) <span class="sc">|&gt;</span> <span class="fu">html_text</span>()</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>durations <span class="ot">&lt;-</span> <span class="fu">sapply</span>(durations, <span class="cf">function</span>(x) {</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  time_parts <span class="ot">&lt;-</span> <span class="fu">strsplit</span>(x, <span class="st">"h|m"</span>)[[<span class="dv">1</span>]]</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.numeric</span>(time_parts[<span class="dv">1</span>]) <span class="sc">*</span> <span class="dv">60</span> <span class="sc">+</span> <span class="fu">as.numeric</span>(time_parts[<span class="dv">2</span>])</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="co">#extract rating</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>ratings <span class="ot">&lt;-</span> data_html <span class="sc">|&gt;</span> <span class="fu">html_nodes</span>(<span class="st">'.ipc-rating-star--rating'</span>) <span class="sc">|&gt;</span> <span class="fu">html_text</span>()</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="co">#extract votes</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>votes <span class="ot">&lt;-</span> data_html <span class="sc">%&gt;%</span> <span class="fu">html_nodes</span>(<span class="st">".ipc-rating-star--voteCount"</span>) <span class="sc">%&gt;%</span> <span class="fu">html_text</span>()</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>votes <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">(|</span><span class="sc">\\</span><span class="st">)| "</span>, <span class="st">""</span>, votes)</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>movies_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>  <span class="at">Title =</span> title_names,</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>  <span class="at">Year =</span> years,</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>  <span class="at">Duration =</span> durations,</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>  <span class="at">Rating =</span> ratings,</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>  <span class="at">Votes =</span> votes,</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>  <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(movies_data) <span class="ot">&lt;-</span> <span class="cn">NULL</span> </span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(movies_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>                      Title Year Duration Rating Votes
+1         Kuru Otlar Üstüne 2023      197    7.7  &nbsp;16K
+2  Yedinci Kogustaki Mucize 2019      132    8.2  &nbsp;58K
+3                    Baskin 2015       97    5.8  &nbsp;13K
+4                Kis Uykusu 2014      196    8.0  &nbsp;57K
+5         Cebimdeki Yabanci 2018       95    6.8  &nbsp;10K
+6                      Ayla 2017      125    8.2  &nbsp;45K
+7   Bir Zamanlar Anadolu'da 2011      157    7.8  &nbsp;51K
+8               Ahlat Agaci 2018      188    8.0  &nbsp;29K
+9   Istanbul Için Son Çagri 2023       91    5.3 &nbsp;9.6K
+10                   Dag II 2016      135    8.2 &nbsp;111K
+11             Kurak Günler 2022      129    7.5  &nbsp;13K
+12      Dabbe: Cin Çarpmasi 2013      134    6.8 &nbsp;7.9K
+13                   Mucize 2015      136    7.6  &nbsp;15K
+14                   Bihter 2023      113    3.6 &nbsp;4.1K
+15                   Siccîn 2014       96    6.0 &nbsp;5.7K
+16           Ölümlü Dünya 2 2023      117    6.8 &nbsp;9.7K
+17             Ölümlü Dünya 2018      107    7.6  &nbsp;33K
+18                     Kedi 2016       79    7.6  &nbsp;16K
+19   The Ottoman Lieutenant 2017      106    6.4  &nbsp;27K
+20                      Dag 2012       90    7.5  &nbsp;24K
+21               Av Mevsimi 2010      140    7.4  &nbsp;38K
+22           Do Not Disturb 2023      114    6.3  &nbsp;11K
+23              Okul Tirasi 2021       85    7.3 &nbsp;3.5K
+24            Aile Arasinda 2017      124    7.6  &nbsp;27K
+25                 Siccin 2 2015       93    6.1 &nbsp;4.2K</code></pre>
+</div>
+</div>
+<section id="a" class="level1">
+<h1>3.a</h1>
+<p><strong>Movies and Their Ratings</strong></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Convert the datatype of the Rating column </span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>movies_data<span class="sc">$</span>Rating <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(movies_data<span class="sc">$</span>Rating)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>max_rating <span class="ot">&lt;-</span> <span class="fu">max</span>(movies_data<span class="sc">$</span>Rating, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>min_rating <span class="ot">&lt;-</span> <span class="fu">min</span>(movies_data<span class="sc">$</span>Rating, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>mid_point <span class="ot">&lt;-</span> (max_rating <span class="sc">+</span> min_rating) <span class="sc">/</span> <span class="dv">2</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>movies_data_arranged_by_rating <span class="ot">&lt;-</span> movies_data <span class="sc">%&gt;%</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Rating))</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(movies_data, <span class="fu">aes</span>(<span class="at">x =</span> Rating, <span class="at">y =</span> <span class="fu">reorder</span>(Title, Rating), <span class="at">fill =</span> Rating <span class="sc">&gt;</span> mid_point)) <span class="sc">+</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x =</span> mid_point, <span class="at">xend =</span> Rating, <span class="at">yend =</span> Title), <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"blue"</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Below Midpoint"</span>, <span class="st">"Above Midpoint"</span>)) <span class="sc">+</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Movies and Ratings"</span>,</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Rating"</span>,</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Movies"</span>,</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Rating Category"</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="fu">min</span>(movies_data<span class="sc">$</span>Rating), <span class="fu">max</span>(movies_data<span class="sc">$</span>Rating), <span class="at">by =</span> <span class="dv">1</span>))  <span class="co"># X ekseninde rating de??erleri</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="assignment-2_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Best 5 Movies by Rating</strong></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>top_5_movies <span class="ot">&lt;-</span> movies_data <span class="sc">%&gt;%</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Rating)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">5</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(top_5_movies)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>                     Title Year Duration Rating Votes
+1 Yedinci Kogustaki Mucize 2019      132    8.2  &nbsp;58K
+2                     Ayla 2017      125    8.2  &nbsp;45K
+3                   Dag II 2016      135    8.2 &nbsp;111K
+4               Kis Uykusu 2014      196    8.0  &nbsp;57K
+5              Ahlat Agaci 2018      188    8.0  &nbsp;29K</code></pre>
+</div>
+</div>
+<p><strong>Worst 5 Movies by Rating.</strong></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>bottom_5_movies <span class="ot">&lt;-</span> movies_data <span class="sc">%&gt;%</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(Rating) <span class="sc">%&gt;%</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">5</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(bottom_5_movies)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>                    Title Year Duration Rating Votes
+1                  Bihter 2023      113    3.6 &nbsp;4.1K
+2 Istanbul Için Son Çagri 2023       91    5.3 &nbsp;9.6K
+3                  Baskin 2015       97    5.8  &nbsp;13K
+4                  Siccîn 2014       96    6.0 &nbsp;5.7K
+5                Siccin 2 2015       93    6.1 &nbsp;4.2K</code></pre>
+</div>
+</div>
+</section>
+<section id="b" class="level1">
+<h1>3.b</h1>
+<p>My Favourite 3 Films</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#Highlighting my favs</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>my_fav_three_movies <span class="ot">&lt;-</span> movies_data_arranged_by_rating <span class="sc">|&gt;</span> </span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Title <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Av Mevsimi"</span>, <span class="st">"Bir Zamanlar Anadolu'da"</span>, <span class="st">"Ahlat Agaci"</span>))</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#Creating the table.</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>movies_data_arranged_by_rating <span class="sc">%&gt;%</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_style</span>(</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">style =</span> <span class="fu">cell_fill</span>(<span class="at">color =</span> <span class="st">"yellow"</span>),</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">locations =</span> <span class="fu">cells_body</span>(</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">columns =</span> <span class="fu">vars</span>(Title), </span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">rows =</span> Title <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Av Mevsimi"</span>, <span class="st">"Bir Zamanlar Anadolu'da"</span>, <span class="st">"Ahlat Agaci"</span>)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="sweqouqlok" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#sweqouqlok table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#sweqouqlok thead, #sweqouqlok tbody, #sweqouqlok tfoot, #sweqouqlok tr, #sweqouqlok td, #sweqouqlok th {
+  border-style: none;
+}
+
+#sweqouqlok p {
+  margin: 0;
+  padding: 0;
+}
+
+#sweqouqlok .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#sweqouqlok .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#sweqouqlok .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#sweqouqlok .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#sweqouqlok .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#sweqouqlok .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#sweqouqlok .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#sweqouqlok .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#sweqouqlok .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#sweqouqlok .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#sweqouqlok .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#sweqouqlok .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#sweqouqlok .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#sweqouqlok .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#sweqouqlok .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#sweqouqlok .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#sweqouqlok .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#sweqouqlok .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#sweqouqlok .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#sweqouqlok .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#sweqouqlok .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#sweqouqlok .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#sweqouqlok .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#sweqouqlok .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#sweqouqlok .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#sweqouqlok .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#sweqouqlok .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#sweqouqlok .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#sweqouqlok .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#sweqouqlok .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#sweqouqlok .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#sweqouqlok .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#sweqouqlok .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#sweqouqlok .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#sweqouqlok .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#sweqouqlok .gt_left {
+  text-align: left;
+}
+
+#sweqouqlok .gt_center {
+  text-align: center;
+}
+
+#sweqouqlok .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#sweqouqlok .gt_font_normal {
+  font-weight: normal;
+}
+
+#sweqouqlok .gt_font_bold {
+  font-weight: bold;
+}
+
+#sweqouqlok .gt_font_italic {
+  font-style: italic;
+}
+
+#sweqouqlok .gt_super {
+  font-size: 65%;
+}
+
+#sweqouqlok .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#sweqouqlok .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#sweqouqlok .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#sweqouqlok .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#sweqouqlok .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#sweqouqlok .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#sweqouqlok .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#sweqouqlok .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#sweqouqlok div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="header gt_col_headings">
+<th id="Title" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Title</th>
+<th id="Year" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Year</th>
+<th id="Duration" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Duration</th>
+<th id="Rating" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Rating</th>
+<th id="Votes" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Votes</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers="Title">Yedinci Kogustaki Mucize</td>
+<td class="gt_row gt_right" headers="Year">2019</td>
+<td class="gt_row gt_right" headers="Duration">132</td>
+<td class="gt_row gt_right" headers="Rating">8.2</td>
+<td class="gt_row gt_left" headers="Votes">&nbsp;58K</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Title">Ayla</td>
+<td class="gt_row gt_right" headers="Year">2017</td>
+<td class="gt_row gt_right" headers="Duration">125</td>
+<td class="gt_row gt_right" headers="Rating">8.2</td>
+<td class="gt_row gt_left" headers="Votes">&nbsp;45K</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Title">Dag II</td>
+<td class="gt_row gt_right" headers="Year">2016</td>
+<td class="gt_row gt_right" headers="Duration">135</td>
+<td class="gt_row gt_right" headers="Rating">8.2</td>
+<td class="gt_row gt_left" headers="Votes">&nbsp;111K</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Title">Kis Uykusu</td>
+<td class="gt_row gt_right" headers="Year">2014</td>
+<td class="gt_row gt_right" headers="Duration">196</td>
+<td class="gt_row gt_right" headers="Rating">8.0</td>
+<td class="gt_row gt_left" headers="Votes">&nbsp;57K</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Title" style="background-color: #FFFF00">Ahlat Agaci</td>
+<td class="gt_row gt_right" headers="Year">2018</td>
+<td class="gt_row gt_right" headers="Duration">188</td>
+<td class="gt_row gt_right" headers="Rating">8.0</td>
+<td class="gt_row gt_left" headers="Votes">&nbsp;29K</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Title" style="background-color: #FFFF00">Bir Zamanlar Anadolu'da</td>
+<td class="gt_row gt_right" headers="Year">2011</td>
+<td class="gt_row gt_right" headers="Duration">157</td>
+<td class="gt_row gt_right" headers="Rating">7.8</td>
+<td class="gt_row gt_left" headers="Votes">&nbsp;51K</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Title">Kuru Otlar Üstüne</td>
+<td class="gt_row gt_right" headers="Year">2023</td>
+<td class="gt_row gt_right" headers="Duration">197</td>
+<td class="gt_row gt_right" headers="Rating">7.7</td>
+<td class="gt_row gt_left" headers="Votes">&nbsp;16K</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Title">Mucize</td>
+<td class="gt_row gt_right" headers="Year">2015</td>
+<td class="gt_row gt_right" headers="Duration">136</td>
+<td class="gt_row gt_right" headers="Rating">7.6</td>
+<td class="gt_row gt_left" headers="Votes">&nbsp;15K</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Title">Ölümlü Dünya</td>
+<td class="gt_row gt_right" headers="Year">2018</td>
+<td class="gt_row gt_right" headers="Duration">107</td>
+<td class="gt_row gt_right" headers="Rating">7.6</td>
+<td class="gt_row gt_left" headers="Votes">&nbsp;33K</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Title">Kedi</td>
+<td class="gt_row gt_right" headers="Year">2016</td>
+<td class="gt_row gt_right" headers="Duration">79</td>
+<td class="gt_row gt_right" headers="Rating">7.6</td>
+<td class="gt_row gt_left" headers="Votes">&nbsp;16K</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Title">Aile Arasinda</td>
+<td class="gt_row gt_right" headers="Year">2017</td>
+<td class="gt_row gt_right" headers="Duration">124</td>
+<td class="gt_row gt_right" headers="Rating">7.6</td>
+<td class="gt_row gt_left" headers="Votes">&nbsp;27K</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Title">Kurak Günler</td>
+<td class="gt_row gt_right" headers="Year">2022</td>
+<td class="gt_row gt_right" headers="Duration">129</td>
+<td class="gt_row gt_right" headers="Rating">7.5</td>
+<td class="gt_row gt_left" headers="Votes">&nbsp;13K</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Title">Dag</td>
+<td class="gt_row gt_right" headers="Year">2012</td>
+<td class="gt_row gt_right" headers="Duration">90</td>
+<td class="gt_row gt_right" headers="Rating">7.5</td>
+<td class="gt_row gt_left" headers="Votes">&nbsp;24K</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Title" style="background-color: #FFFF00">Av Mevsimi</td>
+<td class="gt_row gt_right" headers="Year">2010</td>
+<td class="gt_row gt_right" headers="Duration">140</td>
+<td class="gt_row gt_right" headers="Rating">7.4</td>
+<td class="gt_row gt_left" headers="Votes">&nbsp;38K</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Title">Okul Tirasi</td>
+<td class="gt_row gt_right" headers="Year">2021</td>
+<td class="gt_row gt_right" headers="Duration">85</td>
+<td class="gt_row gt_right" headers="Rating">7.3</td>
+<td class="gt_row gt_left" headers="Votes">&nbsp;3.5K</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Title">Cebimdeki Yabanci</td>
+<td class="gt_row gt_right" headers="Year">2018</td>
+<td class="gt_row gt_right" headers="Duration">95</td>
+<td class="gt_row gt_right" headers="Rating">6.8</td>
+<td class="gt_row gt_left" headers="Votes">&nbsp;10K</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Title">Dabbe: Cin Çarpmasi</td>
+<td class="gt_row gt_right" headers="Year">2013</td>
+<td class="gt_row gt_right" headers="Duration">134</td>
+<td class="gt_row gt_right" headers="Rating">6.8</td>
+<td class="gt_row gt_left" headers="Votes">&nbsp;7.9K</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Title">Ölümlü Dünya 2</td>
+<td class="gt_row gt_right" headers="Year">2023</td>
+<td class="gt_row gt_right" headers="Duration">117</td>
+<td class="gt_row gt_right" headers="Rating">6.8</td>
+<td class="gt_row gt_left" headers="Votes">&nbsp;9.7K</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Title">The Ottoman Lieutenant</td>
+<td class="gt_row gt_right" headers="Year">2017</td>
+<td class="gt_row gt_right" headers="Duration">106</td>
+<td class="gt_row gt_right" headers="Rating">6.4</td>
+<td class="gt_row gt_left" headers="Votes">&nbsp;27K</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Title">Do Not Disturb</td>
+<td class="gt_row gt_right" headers="Year">2023</td>
+<td class="gt_row gt_right" headers="Duration">114</td>
+<td class="gt_row gt_right" headers="Rating">6.3</td>
+<td class="gt_row gt_left" headers="Votes">&nbsp;11K</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Title">Siccin 2</td>
+<td class="gt_row gt_right" headers="Year">2015</td>
+<td class="gt_row gt_right" headers="Duration">93</td>
+<td class="gt_row gt_right" headers="Rating">6.1</td>
+<td class="gt_row gt_left" headers="Votes">&nbsp;4.2K</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Title">Siccîn</td>
+<td class="gt_row gt_right" headers="Year">2014</td>
+<td class="gt_row gt_right" headers="Duration">96</td>
+<td class="gt_row gt_right" headers="Rating">6.0</td>
+<td class="gt_row gt_left" headers="Votes">&nbsp;5.7K</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Title">Baskin</td>
+<td class="gt_row gt_right" headers="Year">2015</td>
+<td class="gt_row gt_right" headers="Duration">97</td>
+<td class="gt_row gt_right" headers="Rating">5.8</td>
+<td class="gt_row gt_left" headers="Votes">&nbsp;13K</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Title">Istanbul Için Son Çagri</td>
+<td class="gt_row gt_right" headers="Year">2023</td>
+<td class="gt_row gt_right" headers="Duration">91</td>
+<td class="gt_row gt_right" headers="Rating">5.3</td>
+<td class="gt_row gt_left" headers="Votes">&nbsp;9.6K</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Title">Bihter</td>
+<td class="gt_row gt_right" headers="Year">2023</td>
+<td class="gt_row gt_right" headers="Duration">113</td>
+<td class="gt_row gt_right" headers="Rating">3.6</td>
+<td class="gt_row gt_left" headers="Votes">&nbsp;4.1K</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="c" class="level1">
+<h1>3.c</h1>
+<p>Average Ratings by Year</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate yearly rating averages</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>yearly_rating_averages <span class="ot">&lt;-</span> movies_data_arranged_by_rating <span class="sc">%&gt;%</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Year) <span class="sc">%&gt;%</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">average_rating =</span> <span class="fu">mean</span>(<span class="fu">as.numeric</span>(Rating), <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co"># View the result</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(yearly_rating_averages)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 13 × 2
+   Year  average_rating
+   &lt;chr&gt;          &lt;dbl&gt;
+ 1 2010            7.4 
+ 2 2011            7.8 
+ 3 2012            7.5 
+ 4 2013            6.8 
+ 5 2014            7   
+ 6 2015            6.5 
+ 7 2016            7.9 
+ 8 2017            7.4 
+ 9 2018            7.47
+10 2019            8.2 
+11 2021            7.3 
+12 2022            7.5 
+13 2023            5.94</code></pre>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Scatter plot of yearly rating averages with line connecting the points</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(yearly_rating_averages, <span class="fu">aes</span>(<span class="at">x =</span> Year, <span class="at">y =</span> average_rating)) <span class="sc">+</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span> </span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">group =</span> <span class="dv">1</span>, <span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span>  <span class="co"># Adding line connecting the points</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Average Movie Ratings Over the Years"</span>,</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Year"</span>,</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Average Rating"</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="assignment-2_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Number of Movies per Year</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the number of movies per year</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>movies_per_year <span class="ot">&lt;-</span> movies_data_arranged_by_rating <span class="sc">%&gt;%</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Year) <span class="sc">%&gt;%</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">number_of_movies =</span> <span class="fu">n</span>())</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Scatter plot of number of movies per year</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(movies_per_year, <span class="fu">aes</span>(<span class="at">x =</span> Year, <span class="at">y =</span> number_of_movies)) <span class="sc">+</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">group =</span> <span class="dv">1</span>, <span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Number of Movies Per Year"</span>,</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Year"</span>,</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Number of Movies"</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="assignment-2_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Box Plot of Ratings Over the Years</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Box plot of ratings over the years</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(movies_data_arranged_by_rating, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">as.factor</span>(Year), <span class="at">y =</span> <span class="fu">as.numeric</span>(Rating))) <span class="sc">+</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">"tomato"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Box Plot of Movie Ratings Over the Years"</span>,</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Year"</span>,</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Rating"</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="assignment-2_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="d" class="level1">
+<h1>3.d</h1>
+<p>Is there a correlation between <strong>Votes</strong> and <strong>Ratings</strong></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(movies_data_arranged_by_rating,<span class="fu">aes</span>(<span class="at">x =</span> Votes,<span class="at">y =</span> Rating))<span class="sc">+</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="assignment-2_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 
 
 </section>
